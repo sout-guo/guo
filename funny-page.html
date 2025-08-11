@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你一个小惊喜</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 配置Tailwind自定义颜色和字体
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B8B',
+                        secondary: '#8B9FFF',
+                        accent: '#FFD166',
+                        light: '#FFF5F7',
+                        dark: '#5A4B60'
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Marker Felt"', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+            .bounce-slow {
+                animation: bounce 3s infinite;
+            }
+            .wiggle {
+                animation: wiggle 1s ease-in-out infinite;
+            }
+            .heart-beat {
+                animation: heartBeat 1.5s infinite;
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-light to-pink-100 min-h-screen font-cute text-dark overflow-x-hidden">
+    <!-- 顶部导航 -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-primary text-xl font-bold">开心小站</div>
+            <div class="flex gap-4">
+                <button id="confettiBtn" class="bg-accent hover:bg-yellow-400 text-dark px-3 py-1 rounded-full text-sm transition-all hover:scale-105">
+                    <i class="fa fa-magic mr-1"></i> 惊喜
+                </button>
+                <button id="musicBtn" class="bg-secondary hover:bg-blue-400 text-white px-3 py-1 rounded-full text-sm transition-all hover:scale-105">
+                    <i class="fa fa-music mr-1"></i> 音乐
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- 欢迎区域 -->
+        <section class="text-center mb-16">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary mb-4 text-shadow transition-all duration-500 hover:scale-105">
+                你今天真好看！
+            </h1>
+            <p class="text-[clamp(1rem,2vw,1.25rem)] text-dark/80 max-w-2xl mx-auto">
+                想不想看看今天有什么好玩的？往下滑，有更多惊喜等着你哦～
+            </p>
+            <div class="mt-8 animate-bounce">
+                <i class="fa fa-angle-down text-2xl text-primary"></i>
+            </div>
+        </section>
+
+        <!-- 笑话区域 -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16 transform transition-all duration-300 hover:shadow-xl">
+            <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center">
+                <i class="fa fa-smile-o mr-2"></i> 今日笑话
+            </h2>
+            <div id="jokeContainer" class="text-lg md:text-xl mb-6 min-h-[80px]">
+                为什么数学书总是很忧郁？因为它有太多的问题了。
+            </div>
+            <button id="newJokeBtn" class="bg-secondary hover:bg-blue-500 text-white py-2 px-6 rounded-full transition-all duration-300 hover:scale-105">
+                再来一个 <i class="fa fa-refresh ml-1"></i>
+            </button>
+        </section>
+
+        <!-- 互动按钮区域 -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+            <button class="interaction-btn bg-white rounded-xl shadow-md p-4 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-action="compliment">
+                <i class="fa fa-heart text-primary text-2xl mb-2 heart-beat"></i>
+                <p>夸夸我</p>
+            </button>
+            <button class="interaction-btn bg-white rounded-xl shadow-md p-4 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-action="cute">
+                <i class="fa fa-paw text-accent text-2xl mb-2 float"></i>
+                <p>可爱图</p>
+            </button>
+            <button class="interaction-btn bg-white rounded-xl shadow-md p-4 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-action="motivate">
+                <i class="fa fa-star text-secondary text-2xl mb-2 bounce-slow"></i>
+                <p>鼓励我</p>
+            </button>
+            <button class="interaction-btn bg-white rounded-xl shadow-md p-4 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-action="random">
+                <i class="fa fa-random text-green-400 text-2xl mb-2 wiggle"></i>
+                <p>随机惊喜</p>
+            </button>
+        </section>
+
+        <!-- 图片展示区域 -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16">
+            <h2 class="text-2xl font-bold text-accent mb-6 flex items-center">
+                <i class="fa fa-picture-o mr-2"></i> 可爱瞬间
+            </h2>
+            <div id="imageContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <img src="https://picsum.photos/seed/cute1/600/400" alt="可爱的小猫在玩耍" class="rounded-lg shadow-md w-full h-64 object-cover transition-all duration-300 hover:scale-105">
+                <img src="https://picsum.photos/seed/cute2/600/400" alt="阳光下的花朵" class="rounded-lg shadow-md w-full h-64 object-cover transition-all duration-300 hover:scale-105">
+            </div>
+        </section>
+
+        <!-- 互动问答区域 -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-16">
+            <h2 class="text-2xl font-bold text-primary mb-6 flex items-center">
+                <i class="fa fa-comments mr-2"></i> 你觉得我今天怎么样？
+            </h2>
+            <div class="flex flex-wrap gap-3">
+                <button class="opinion-btn bg-primary/10 hover:bg-primary/20 text-primary py-2 px-5 rounded-full transition-all duration-300">
+                    超级可爱！
+                </button>
+                <button class="opinion-btn bg-primary/10 hover:bg-primary/20 text-primary py-2 px-5 rounded-full transition-all duration-300">
+                    今天特别美！
+                </button>
+                <button class="opinion-btn bg-primary/10 hover:bg-primary/20 text-primary py-2 px-5 rounded-full transition-all duration-300">
+                    让人眼前一亮！
+                </button>
+                <button class="opinion-btn bg-primary/10 hover:bg-primary/20 text-primary py-2 px-5 rounded-full transition-all duration-300">
+                    比昨天更迷人！
+                </button>
+            </div>
+            <div id="opinionResponse" class="mt-6 text-center text-lg hidden"></div>
+        </section>
+
+        <!-- 祝福区域 -->
+        <section class="text-center mb-16">
+            <div class="inline-block bg-gradient-to-r from-primary to-secondary text-white p-6 md:p-8 rounded-3xl shadow-xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">今日祝福</h2>
+                <p class="text-lg md:text-xl max-w-lg mx-auto">
+                    愿你的每一天都充满阳光和欢笑，所有的烦恼都烟消云散，
+                    因为你值得世界上所有的美好！
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>希望你今天过得开心！</p>
+            <p class="mt-2 text-sm text-gray-300">
+                <i class="fa fa-heart text-primary"></i> 给你满满的爱 <i class="fa fa-heart text-primary"></i>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 弹出消息框 -->
+    <div id="messageBox" class="fixed bottom-6 right-6 bg-white rounded-xl shadow-lg p-4 max-w-xs transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <div id="messageContent" class="text-dark"></div>
+    </div>
+
+    <!-- 引入JS库 -->
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script>
+        // 笑话数据
+        const jokes = [
+            "为什么稻草人能获奖？因为他在自己的岗位上表现得非常出色！",
+            "我告诉电脑我需要休息，它给了我一个蓝屏。",
+            "为什么数学书总是很忧郁？因为它有太多的问题了。",
+            "为什么灯泡不喜欢聊天？因为它怕自己会爆梗。",
+            "我试着写一本关于隐身的书，但它就是卖不出去。",
+            "为什么自行车不能自己站起来？因为它太累了。",
+            "我问我的狗：“你想要吃的吗？” 它说：“汪！” 我又问：“你确定吗？” 它说：“汪！汪！”",
+            "为什么程序员总是混淆万圣节和圣诞节？因为 Oct 31 等于 Dec 25。",
+            "我最近学会了如何用折纸做一个钱包。现在我有了钱，却不知道怎么打开它。",
+            "为什么书总是在图书馆里聚会？因为它们有很多故事要分享。"
+        ];
+
+        // 赞美数据
+        const compliments = [
+            "你笑起来的时候，整个世界都亮了！",
+            "你的眼睛像星星一样闪亮，真好看！",
+            "每次看到你，我的心情都会变好～",
+            "你的品味真好，穿什么都好看！",
+            "你有一种特别的魅力，让人忍不住想靠近。",
+            "你的声音真好听，像音乐一样。",
+            "你总是那么乐观，和你在一起很开心。",
+            "你很聪明，总能想到好主意！",
+            "你有一颗善良的心，这是最珍贵的。",
+            "你今天看起来特别有精神，状态真好！"
+        ];
+
+        // 鼓励话语
+        const motivations = [
+            "你已经做得很好了，继续加油！",
+            "无论遇到什么困难，我相信你都能克服！",
+            "你的努力一定会有回报的，坚持下去！",
+            "你比自己想象的更强大，不要低估自己！",
+            "每一步小进步都很重要，为你骄傲！",
+            "即使暂时没做好也没关系，下次一定会更好！",
+            "你的潜力无限，继续发掘吧！",
+            "休息一下也没关系，调整好状态再出发！",
+            "相信自己，你就是最棒的！",
+            "今天的你也很努力，值得被表扬！"
+        ];
+
+        // 可爱图片
+        const cuteImages = [
+            "https://picsum.photos/seed/cute3/600/400",
+            "https://picsum.photos/seed/cute4/600/400",
+            "https://picsum.photos/seed/cute5/600/400",
+            "https://picsum.photos/seed/cute6/600/400",
+            "https://picsum.photos/seed/cute7/600/400",
+            "https://picsum.photos/seed/cute8/600/400",
+            "https://picsum.photos/seed/cute9/600/400",
+            "https://picsum.photos/seed/cute10/600/400"
+        ];
+
+        // 随机惊喜
+        const surprises = [
+            "🎉 恭喜你获得一个虚拟拥抱！",
+            "💖 有人偷偷喜欢你哦～",
+            "🍀 今天会有好事发生在你身上！",
+            "🎁 你收到一份好心情，请查收！",
+            "✨ 你的微笑是今天最美的风景！",
+            "🍭 给你一颗糖，甜到心里～",
+            "🌟 你就是那颗最亮的星星！",
+            "🌈 风雨过后总会有彩虹，就像你一样美好！"
+        ];
+
+        // DOM元素
+        const newJokeBtn = document.getElementById('newJokeBtn');
+        const jokeContainer = document.getElementById('jokeContainer');
+        const interactionBtns = document.querySelectorAll('.interaction-btn');
+        const messageBox = document.getElementById('messageBox');
+        const messageContent = document.getElementById('messageContent');
+        const opinionBtns = document.querySelectorAll('.opinion-btn');
+        const opinionResponse = document.getElementById('opinionResponse');
+        const confettiBtn = document.getElementById('confettiBtn');
+        const musicBtn = document.getElementById('musicBtn');
+        const imageContainer = document.getElementById('imageContainer');
+
+        // 播放音乐
+        let isPlaying = false;
+        let audio;
+        
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerHTML = '<i class="fa fa-music mr-1"></i> 音乐';
+            } else {
+                audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+                audio.loop = true;
+                audio.play();
+                musicBtn.innerHTML = '<i class="fa fa-pause mr-1"></i> 暂停';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // 显示消息
+        function showMessage(message) {
+            messageContent.textContent = message;
+            messageBox.classList.remove('translate-y-20', 'opacity-0');
+            messageBox.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                messageBox.classList.remove('translate-y-0', 'opacity-100');
+                messageBox.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // 新笑话
+        newJokeBtn.addEventListener('click', () => {
+            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+            jokeContainer.textContent = randomJoke;
+            
+            // 添加动画效果
+            jokeContainer.classList.add('scale-105');
+            setTimeout(() => {
+                jokeContainer.classList.remove('scale-105');
+            }, 300);
+        });
+
+        // 互动按钮
+        interactionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.getAttribute('data-action');
+                let message;
+                
+                switch(action) {
+                    case 'compliment':
+                        message = compliments[Math.floor(Math.random() * compliments.length)];
+                        break;
+                    case 'cute':
+                        const randomImg = cuteImages[Math.floor(Math.random() * cuteImages.length)];
+                        imageContainer.innerHTML = `
+                            <img src="${randomImg}" alt="可爱的图片" class="rounded-lg shadow-md w-full h-64 object-cover transition-all duration-300 hover:scale-105">
+                            <img src="https://picsum.photos/seed/cute${Math.floor(Math.random() * 10) + 1}/600/400" alt="另一张可爱的图片" class="rounded-lg shadow-md w-full h-64 object-cover transition-all duration-300 hover:scale-105">
+                        `;
+                        message = "给你看可爱的图片，是不是很治愈？";
+                        break;
+                    case 'motivate':
+                        message = motivations[Math.floor(Math.random() * motivations.length)];
+                        break;
+                    case 'random':
+                        message = surprises[Math.floor(Math.random() * surprises.length)];
+                        break;
+                }
+                
+                showMessage(message);
+            });
+        });
+
+        // 评价按钮
+        opinionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const opinion = btn.textContent;
+                opinionResponse.textContent = `听到你这么说我太开心啦！其实我觉得你${opinion.toLowerCase()}`;
+                opinionResponse.classList.remove('hidden');
+                
+                // 添加动画效果
+                opinionResponse.classList.add('scale-110', 'text-primary');
+                setTimeout(() => {
+                    opinionResponse.classList.remove('scale-110', 'text-primary');
+                }, 500);
+            });
+        });
+
+        // 庆祝效果
+        confettiBtn.addEventListener('click', () => {
+            const confettiSettings = {
+                target: 'confetti-holder',
+                max: 150,
+                size: 1,
+                animate: true,
+                props: ['circle', 'square', 'triangle', 'line'],
+                colors: [[165,104,246],[230,61,135],[0,199,228],[253,214,126]],
+                clock: 25,
+                rotate: true,
+                start_from_edge: true,
+                respawn: false
+            };
+            
+            // 创建临时容器
+            const confettiContainer = document.createElement('div');
+            confettiContainer.id = 'confetti-holder';
+            confettiContainer.style.position = 'fixed';
+            confettiContainer.style.top = '0';
+            confettiContainer.style.left = '0';
+            confettiContainer.style.width = '100%';
+            confettiContainer.style.height = '100%';
+            confettiContainer.style.pointerEvents = 'none';
+            document.body.appendChild(confettiContainer);
+            
+            // 生成彩屑
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            
+            // 3秒后清除
+            setTimeout(() => {
+                confetti.clear();
+                document.body.removeChild(confettiContainer);
+            }, 3000);
+            
+            showMessage("哇！好美的庆祝效果，希望你喜欢～");
+        });
+
+        // 滚动效果 - 导航栏变化
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2', 'shadow');
+                nav.classList.remove('py-3');
+            } else {
+                nav.classList.add('py-3');
+                nav.classList.remove('py-2', 'shadow');
+            }
+        });
+
+        // 页面加载完成后的动画
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showMessage("欢迎来到开心小站，希望你今天能有个好心情！");
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
